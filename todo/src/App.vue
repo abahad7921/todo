@@ -1,17 +1,17 @@
 <template>
   <v-app>
-     <my-homepage></my-homepage>
+    <navigation-bar></navigation-bar>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import MyHomepage from './pages/MyHomepage.vue';
-
+import NavigationBar from './components/UI/NavigationBar.vue'
 export default {
   name: 'App',
 
   components: {
-    MyHomepage,
+    NavigationBar
   },
 
   data: () => ({
