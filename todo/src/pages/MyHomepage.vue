@@ -2,7 +2,12 @@
     <v-sheet class="mx-auto">
         <v-container class="pa-10">
             <v-layout justify-center>
-                <h1>Todo App</h1>
+                <div v-for="todo in todos" :key="todo.name">
+                    <h1>Name: {{ todo.name }}</h1>
+                    <h3>Expected completion date: {{ todo.completionDate }}</h3>
+                    <p>Desc: {{ todo.description }}</p>
+                    <br>
+                </div>
             </v-layout>
         </v-container>
     </v-sheet>
@@ -10,9 +15,10 @@
 
 <script>
 export default {
-    data() {
-        return {
-            name: "Abdul Ahad"
+    computed: {
+        todos(){
+            //console.log(this.$store.state.todos)
+            return this.$store.state.todos
         }
     }
 }

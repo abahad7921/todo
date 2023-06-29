@@ -3,7 +3,7 @@ import TodoTask from './pages/TodoTask.vue'
 import MyHomepage from './pages/MyHomepage.vue'
 import AboutUs from './pages/AboutUs.vue'
 const routes = [
-    {path: '/home', component: MyHomepage},
+    {path: '/home', alias:'/',component: MyHomepage},
     {path: '/create', component: TodoTask},
     {path: '/about', component: AboutUs}
 ]
