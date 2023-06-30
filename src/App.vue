@@ -1,7 +1,10 @@
 <template>
   <v-app>
-    <navigation-bar></navigation-bar>
-    <router-view></router-view>
+    <navigation-bar>
+      <template #default>
+        <router-view></router-view>
+      </template>
+    </navigation-bar>
   </v-app>
 </template>
 
