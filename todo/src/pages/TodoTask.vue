@@ -58,7 +58,10 @@ export default {
             console.log(ans.valid)
 
             if(ans.valid){
-                this.$store.dispatch('addTodoMutation',{name: this.name,completionDate: this.date, descriptionL: this.desc})
+                this.$store.dispatch('addTodoMutation',
+                { name: this.name, 
+                completionDate: this.date, 
+                description: this.desc })
             }
         }
     }
