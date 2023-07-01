@@ -4,13 +4,26 @@
             <v-form ref="form" class="pa-10">
                 <v-row>
                     <v-col cols="12" sm="12" lg="12" md="12" xsm="12">
-                        <v-text-field label="Title" v-model="name" :rules="nameRules">
+                        <v-text-field 
+                        label="Title" 
+                        v-model="name" 
+                        :rules="nameRules"
+                        prepend-inner-icon="mdi-rename-box">
                         </v-text-field></v-col>
                     <v-col cols="12" sm="12" lg="12" md="12" xsm="12">
-                        <v-text-field type="date" v-model="date" label="Expected completion date" :rules="dateRules">
+                        <v-text-field 
+                        type="date" 
+                        v-model="date" 
+                        label="Expected completion date" 
+                        :rules="dateRules"
+                        prepend-inner-icon="mdi-calendar">
                         </v-text-field></v-col>
                     <v-col cols="12" sm="12" lg="12" md="12" xsm="12">
-                        <v-textarea v-model="desc" label="Description" :rules="descRules">
+                        <v-textarea 
+                        v-model="desc" 
+                        label="Description" 
+                        :rules="descRules"
+                        prepend-inner-icon="mdi-grease-pencil">
                         </v-textarea></v-col>
                     <v-col cols="12" sm="12" lg="12" md="12" xsm="12">
                         <v-btn type="submit" @click="validate" color="success">Create</v-btn>
@@ -71,7 +84,8 @@ export default {
 
             if (ans.valid) {
                 this.$store.dispatch('addTodoMutation',
-                    {
+                    {   
+                        id: this.$store.state.todos.length + 1,
                         name: this.name,
                         completionDate: this.date,
                         description: this.desc

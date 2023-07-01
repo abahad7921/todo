@@ -1,6 +1,6 @@
 <template>
     <v-app id="inspire">
-        <v-navigation-drawer v-model="drawer">
+        <v-navigation-drawer v-model="drawer" color="white">
             <v-list nav>
                 <v-list-item prepend-icon="mdi-home" title="Home" value="Home" to="/home"></v-list-item>
                 <v-list-item prepend-icon="mdi-checkbox-marked-circle" title="Create todo" value="newTodo" to="/create"></v-list-item>
@@ -11,7 +11,7 @@
         <v-app-bar
         app
         image="img.jpg" extended>
-            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click="drawer = !drawer" color="white"></v-app-bar-nav-icon>
 
             <v-toolbar-title class="title">Todo App</v-toolbar-title>
         </v-app-bar>
