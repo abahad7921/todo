@@ -84,7 +84,8 @@ export default {
 
             if (ans.valid) {
                 this.$store.dispatch('addTodoMutation',
-                    {
+                    {   
+                        id: this.$store.state.todos.length + 1,
                         name: this.name,
                         completionDate: this.date,
                         description: this.desc

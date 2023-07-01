@@ -3,7 +3,13 @@ import { createStore } from "vuex";
 const store = createStore({
     state() {
         return {
-            todos: [],
+            todos: [
+                {id: 1,name:"temp 1", completionDate:"12-01-2023",description:"xcvervebrtbgbbrtgbrtgb"},
+                {id: 2,name:"temp 2", completionDate:"12-01-2023",description:"xcvervebrtbgbbrtgbrtgb"},
+                {id: 3,name:"temp 3", completionDate:"12-01-2023",description:"xcvervebrtbgbbrtgbrtgb"},
+                {id: 4,name:"temp 4", completionDate:"12-01-2023",description:"xcvervebrtbgbbrtgbrtgb"},
+                {id: 5,name:"temp 5", completionDate:"12-01-2023",description:"xcvervebrtbgbbrtgbrtgb"},
+            ],
             completedTasks: []
         }
     },
