@@ -3,14 +3,11 @@ const mongodb = require('mongodb')
 
 const router = express.Router()
 
-//GET
 router.get('/', async (req,res) => {
     const tasks = await loadTaskCollection()
     res.send(await tasks.find({}).toArray())
 })
 
-//POST
-//{id: 1,name:"temp 1", completionDate:"12-01-2023",description:"xcvervebrtbgbbrtgbrtgb"},
 router.post('/', async (req,res) => {
     const tasks = await loadTaskCollection()
     await tasks.insertOne({
@@ -24,8 +21,26 @@ router.post('/', async (req,res) => {
     res.status(201).send()
 })
 
+router.put('/:id', async (req,res) => {
+    const {id} = req.params
+    const {name, status, completionDate, description} = req.body
 
-//DELETE
+    try{
+        const tasks = await loadTaskCollection()
+        const result = await tasks.updateOne(
+            {_id: new mongodb.ObjectId(id)},
+            {$set: {name,status,completionDate,description}}
+        )
+
+        if (result.matchedCount === 0) {
+            res.status(404).json({ error: 'Document not found' });
+          } else {
+            res.json({ message: 'Document updated successfully' });
+          }
+    }catch(error){
+        res.status(500).json({error: 'error updating the task'})
+    }
+})
 
 router.delete('/:id',async  (req,res) => {
     const tasks = await loadTaskCollection()
@@ -35,7 +50,7 @@ router.delete('/:id',async  (req,res) => {
 
 async function loadTaskCollection(){
     const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://abahad7921:8utnlFEOKtYPGran@cluster0.tlzzcj5.mongodb.net/?retryWrites=true&w=majority', {
+    (process.env.Mongo_URL, {
      useNewUrlParser: true
     })
  
