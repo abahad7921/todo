@@ -24,9 +24,11 @@
 </template>
 
 <script>
-import { createTask, getTasks } from './../api/taskServices'
+import { createTask, getTasks,updateTask } from './../api/taskServices'
+import { mapGetters } from 'vuex'
 export default {
     name: 'TodoTask',
+    props: ['id'],
     data() {
         return {
             valid: false,
@@ -73,36 +75,99 @@ export default {
             console.log(ans.valid)
 
             if (ans.valid) {
-                const task = {
-                    name: this.name,
-                    completionDate: this.date,
-                    description: this.desc
-                }
-                try {
-                    const response = await createTask(task)
 
-                    console.log(response)
+                if (this.id != undefined) {
+                    console.log("inside edit task method")
+                    const task = this.$store.state.incompleteTasks[this.id]
+                    console.log(task._id)
+                    const newTask = {
+                        name: this.name,
+                        status: 'incomplete',
+                        completionDate: this.date,
+                        description: task.description
+                    }
+                    console.log(task, newTask)
+                    // this.enabelLoadingWheel()
+                    try {
+                        const response = await updateTask(newTask, task._id)
+                        console.log(response)
 
-                    if (response.status === 201) {
-                        const tasks = await getTasks()
+                        if (response.status === 200) {
+                            const tasks = await getTasks()
+                            const completedTasks = tasks.filter(task => task.status === 'complete')
+                            const inCompleteTasks = tasks.filter(task => task.status === 'incomplete')
 
-                        const completedTasks = tasks.filter(task => task.status === 'complete')
-                        const inCompleteTasks = tasks.filter(task => task.status === 'incomplete')
-
-                        this.$store.commit('setIncompleteTasks', inCompleteTasks)
-                        this.$store.commit('setCompleteTasks', completedTasks)
-
-                        this.$refs.form.reset()
-
-                        console.log("completed")
+                            this.$store.commit('setIncompleteTasks', inCompleteTasks)
+                            this.$store.commit('setCompleteTasks', completedTasks)
+                        }
+                    } catch (error) {
+                        console.warn(error)
                     }
                 }
-                catch (error) {
-                    console.log(error)
+                else {
+                    console.log('inside else block')
+                    const task = {
+                        name: this.name,
+                        completionDate: this.date,
+                        description: this.desc
+                    }
+                    try {
+                        const response = await createTask(task)
+
+                        console.log(response)
+
+                        if (response.status === 201) {
+                            const tasks = await getTasks()
+
+                            const completedTasks = tasks.filter(task => task.status === 'complete')
+                            const inCompleteTasks = tasks.filter(task => task.status === 'incomplete')
+
+                            this.$store.commit('setIncompleteTasks', inCompleteTasks)
+                            this.$store.commit('setCompleteTasks', completedTasks)
+
+                            this.$refs.form.reset()
+
+                            console.log("completed")
+                        }
+                    }
+                    catch (error) {
+                        console.log(error)
+                    }
                 }
-
-
             }
+        },
+        setTask(id) {
+            console.log(id)
+            console.log(this.incompleteTasks)
+            //get the task from the store
+            const task = this.incompleteTasks[id]
+            console.log(task)
+            this.name = task.name
+            const dateString = task.completionDate;
+            const parts = dateString.split("-");
+            const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            this.date = formattedDate
+            this.desc = task.description
+        }
+    },
+    computed: {
+        ...mapGetters({
+            incompleteTasks: 'incompleteTasks'
+        })
+    },
+    created() {
+        console.log(this.id)
+
+        if (this.id != undefined) {
+            this.setTask(this.id)
+        }
+    },
+    watch: {
+        id(newId) {
+            this.setTask(newId)
+        },
+        date(newDate) {
+            console.log(newDate)
         }
     }
 }

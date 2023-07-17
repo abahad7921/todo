@@ -22,3 +22,10 @@ export async function createTask(task){
 
     return response
 }
+
+export async function deleteTask(id){
+    const response = await axios.delete(`http://localhost:5000/api/tasks/${id}`)
+    .catch(error => console.warn(error))
+
+    return response
+}

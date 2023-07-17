@@ -36,7 +36,8 @@
                 v-model:active="isLoading"
                 :can-cancel="false"
                 :on-cancel="onCancel"
-                :is-full-page="fullPage"></loading>
+                :is-full-page="fullPage"
+                :loader="loader"></loading>
         </div>
     </v-sheet>
 </template>
@@ -54,7 +55,8 @@ export default {
             showIncomplete: false,
             showBoth: true,
             isLoading: false,
-            fullPage: true
+            fullPage: true,
+            loader: 'dots'
         }
     },
     computed: {
