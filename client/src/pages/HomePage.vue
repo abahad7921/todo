@@ -44,7 +44,7 @@
 
 <script>
 import Loading from 'vue-loading-overlay';
-    import 'vue-loading-overlay/dist/css/index.css';
+import 'vue-loading-overlay/dist/css/index.css';
 import TasksList from '../components/TasksList.vue'
 import {mapGetters} from 'vuex'
 export default {

@@ -21,16 +21,32 @@
             </v-form>
         </v-container>
     </v-sheet>
+    <div class="vld-parent">
+            <loading  
+                v-model:active="isLoading"
+                :can-cancel="false"
+                :on-cancel="onCancel"
+                :is-full-page="fullPage"
+                :loader="loader"></loading>
+        </div>
 </template>
 
 <script>
 import { createTask, getTasks,updateTask } from './../api/taskServices'
 import { mapGetters } from 'vuex'
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
 export default {
     name: 'TodoTask',
     props: ['id'],
+    components:{
+        Loading
+    },
     data() {
         return {
+            isLoading: false,
+            fullPage: true,
+            loader: 'dots',
             valid: false,
             name: '',
             date: '',
@@ -68,6 +84,13 @@ export default {
         }
     },
     methods: {
+        toggleLoadingWheel(){
+            console.log("inside toggle loading wheel method")
+            this.isLoading = !this.isLoading
+        },
+        onCancel(){
+            console.log('the loader is closed now')
+        },
         async validate() {
             console.log("inside the validate method")
 
@@ -87,7 +110,7 @@ export default {
                         description: task.description
                     }
                     console.log(task, newTask)
-                    // this.enabelLoadingWheel()
+                    this.toggleLoadingWheel()
                     try {
                         const response = await updateTask(newTask, task._id)
                         console.log(response)
@@ -96,10 +119,14 @@ export default {
                             const tasks = await getTasks()
                             const completedTasks = tasks.filter(task => task.status === 'complete')
                             const inCompleteTasks = tasks.filter(task => task.status === 'incomplete')
-
+                            this.toggleLoadingWheel()
                             this.$store.commit('setIncompleteTasks', inCompleteTasks)
                             this.$store.commit('setCompleteTasks', completedTasks)
+
+                            this.$router.push('/')
                         }
+                        else
+                            this.toggleLoadingWheel()
                     } catch (error) {
                         console.warn(error)
                     }
@@ -111,6 +138,7 @@ export default {
                         completionDate: this.date,
                         description: this.desc
                     }
+                    this.toggleLoadingWheel()
                     try {
                         const response = await createTask(task)
 
@@ -126,9 +154,12 @@ export default {
                             this.$store.commit('setCompleteTasks', completedTasks)
 
                             this.$refs.form.reset()
-
+                            this.toggleLoadingWheel()
                             console.log("completed")
-                        }
+
+                            this.$router.push('/')
+                        }else
+                            this.toggleLoadingWheel()
                     }
                     catch (error) {
                         console.log(error)
